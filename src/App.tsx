@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
 import './App.css';
 import Home from './Home';
 import PhotoAlbum from './PhotoAlbum';
@@ -18,15 +19,17 @@ function App() {
         </header>
 
         <main>
-          <React.Suspense fallback={<div>loading ....</div>}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/photos">
-                <Route path="" element={<PhotoAlbum ids={imageIds}/>} />
-                <Route path=":id" element={<Photo />} />
-              </Route>
-            </Routes>
-          </React.Suspense>
+          <ErrorBoundary fallback={<div>Something went wrong</div>}>
+            <React.Suspense fallback={<div>loading ....</div>}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/photos">
+                  <Route path="" element={<PhotoAlbum ids={imageIds}/>} />
+                  <Route path=":id" element={<Photo />} />
+                </Route>
+              </Routes>
+            </React.Suspense>
+          </ErrorBoundary>
         </main>
       </BrowserRouter>
     </div>
